@@ -1,7 +1,10 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from 'cors';
-import connectDB from "./Mongodb/connect";
+import connectDB from "./Mongodb/connect.js";
+import postRoutes from "./routes/postRoutes.js";
+import dalleRoutes from "./routes/dalleRoutes.js";
+
 
 //this helps to pull env variables from the .env file
 dotenv.config();
@@ -15,7 +18,13 @@ app.get('/', async(req,res)=>{
 });
 
 const startServer = async() => {
-    app.listen(8080, () => console.log('Server started on port http://localhost:8080'));
+    try{
+        connectDB(process.env.MONGODB_URL);
+        app.listen(8080, () => console.log('Server started on port http://localhost:8080'));
+    }catch (error){
+        console.log(error); 
+    }
+
 }
 
 startServer();
